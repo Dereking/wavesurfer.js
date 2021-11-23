@@ -65,31 +65,30 @@
  *   // wavesurfer options ...
  *   plugins: [
  *     TimelinelrcPlugin.create({
- *       // plugin options ... 
-            container: '#wave-timelinelrc', 
-            lrclines: [
-                {
-                    time: 1.5,
-                    label: "ddfdsfds",
-                    color: '#ff990a'
-                },
-                {
-                    time: 5.5,
-                    label: "V1",
-                    color: '#ff990a'
-                },
-                {
-                    time: 10,
-                    label: "V2",
-                    color: '#00ffcc',
-                    position: 'top'
-                }
-            ]
+ *       // plugin options ...
+ *          container: '#wave-timelinelrc',
+ *          lrclines: [
+ *               {
+ *                  time: 1.5,
+ *                   label: "ddfdsfds",
+ *                  color: '#ff990a'
+ *               },
+ *               {
+ *                   time: 5.5,
+ *                   label: "V1",
+ *                   color: '#ff990a'
+ *               },
+ *               {
+ *                   time: 10,
+ *                   label: "V2",
+ *                   color: '#00ffcc',
+ *                   position: 'top'
+ *               }
+ *           ]
  *     })
  *   ]
  * });
- */
-
+*/
 
 const DEFAULT_FILL_COLOR = "#D8D8D8";
 
@@ -101,7 +100,6 @@ export default class TimelinelrcPlugin {
      * @fires TimelinelrcPlugin#lrcline-drag
      * @fires TimelinelrcPlugin#lrcline-drop
      */
-    
 
     /**
      * Timelinelrc plugin definition factory
@@ -220,7 +218,6 @@ export default class TimelinelrcPlugin {
         this.pixelRatio = null;
         this.maxCanvasWidth = null;
         this.maxCanvasElementWidth = null;
- 
 
         /**
          * This event handler has to be in the constructor function because it
@@ -238,12 +235,11 @@ export default class TimelinelrcPlugin {
             )
             : () => this.render();
 
-        
-        this._onBackendCreated = () => {  
+        this._onBackendCreated = () => {
             if (this.params.lrclines) {
                 this.params.lrclines.forEach(lrcline => this.add(lrcline));
-            }  
-        }; 
+            }
+        };
         this.lrclines = []; 
     }
 
@@ -281,8 +277,6 @@ export default class TimelinelrcPlugin {
         }
     }
 
-
-
     /**
      * Add a lrc line
      *
@@ -306,8 +300,6 @@ export default class TimelinelrcPlugin {
 
         return lrcline;
     }
-
-
 
     /**
      * Create a timelinelrc element to wrap the canvases drawn by this plugin
@@ -538,7 +530,7 @@ export default class TimelinelrcPlugin {
     /**
      * Set the canvas fill style
      *
-     * @param {DOMString|CanvasGradient|CanvasPattern} fillStyle Fill style to
+     * @param {DOMString|CanvasGradient|CanvasPattern} fillStyle Fill style to.
      * use
      */
     setFillStyles(fillStyle) {

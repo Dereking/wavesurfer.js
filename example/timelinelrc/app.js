@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', function() {
         splitChannels: true,
         plugins: [
             WaveSurfer.timelinelrc.create({
-                container: '#wave-timelinelrc', 
+                container: '#wave-timelinelrc',
                 lrclines: [
                     {
                         time: 1.5,
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', function() {
         wavesurfer.on('destroy', hideProgress);
         wavesurfer.on('error', hideProgress);
     })();
- 
+
     wavesurfer.load('../media/stereo.mp3');
- 
+
 });
