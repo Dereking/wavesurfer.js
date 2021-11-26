@@ -1,3 +1,8 @@
+# wavesurferplus.js is forked from [wavesurfer.js](https://wavesurfer-js.org)
+Extral features :
+- add timelinelrc plugin, a timeline bar with lyric support.
+
+
 # [wavesurfer.js](https://wavesurfer-js.org)
 
 [![npm version](https://img.shields.io/npm/v/wavesurfer.js.svg?style=flat)](https://www.npmjs.com/package/wavesurfer.js)

@@ -1,7 +1,7 @@
 {
-  "name": "wavesurfer.js",
-  "version": "5.2.0",
-  "description": "Interactive navigable audio visualization using Web Audio and Canvas",
+  "name": "wavesurferplus.js",
+  "version": "5.2.1",
+  "description": "Interactive navigable audio visualization using Web Audio and Canvas. forked from wavesurfer.js",
   "main": "dist/wavesurfer.js",
   "directories": {
     "example": "example"
@@ -35,7 +35,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/katspaugh/wavesurfer.js.git"
+    "url": "git://github.com/dereking/wavesurferjs.js.git"
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
@@ -43,7 +43,7 @@
   "author": "",
   "license": "BSD-3-Clause",
   "bugs": {
-    "url": "https://github.com/katspaugh/wavesurfer.js/issues"
+    "url": "https://github.com/dereking/wavesurfer.js/issues"
   },
   "keywords": [
     "waveform",
@@ -94,7 +94,7 @@
     "webpack-dev-server": "^4.5.0",
     "webpack-merge": "^5.8.0"
   },
-  "homepage": "https://wavesurfer-js.org",
+  "homepage": "https://github.com/dereking/wavesurfer.js",
   "pre-commit": "lint-js-html",
   "lint-staged": {
     "*.js": [
