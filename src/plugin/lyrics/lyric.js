@@ -25,11 +25,11 @@ export class Lyric {
                 this.start +
                 (4 / this.wrapper.scrollWidth) * this.wavesurfer.getDuration()
                 : Number(params.end);
-        this.line1 = params.line1;
-        this.line2 = params.line2;
+        this.line1 = params.line1 ? params.line1: "Lyric line 1";
+        this.line2 = params.line2 ? params.line2: "Lyric line 2";
         this.resize =
-            params.resize === undefined ? true : Boolean(params.resize);
-        this.drag = params.drag === undefined ? true : Boolean(params.drag);
+            params.resize === undefined ? false : Boolean(params.resize);
+        this.drag = params.drag === undefined ? false : Boolean(params.drag);
         // reflect resize and drag state of lyric for lyric-updated listener
         this.isResizing = false;
         this.isDragging = false;
@@ -62,25 +62,20 @@ export class Lyric {
             params.preventContextMenu === undefined
                 ? false
                 : Boolean(params.preventContextMenu);
-
-        // select channel ID to set lyric
-        let channelIdx =
-            params.channelIdx == null ? -1 : parseInt(params.channelIdx);
-        this.channelIdx = channelIdx;
-        this.lyricHeight = '100%';
+  
+        this.lyricHeight = '100%'; 
         this.marginTop = '0px';
 
-        if (channelIdx !== -1) {
-            let channelCount =
-                this.wavesurfer.backend.buffer != null
-                    ? this.wavesurfer.backend.buffer.numberOfChannels
-                    : -1;
-            if (channelCount >= 0 && channelIdx < channelCount) {
-                this.lyricHeight = Math.floor((1 / channelCount) * 100) + '%';
-                this.marginTop =
-                    this.wavesurfer.getHeight() * channelIdx + 'px';
-            }
-        }
+        
+        // let channelCount =
+        //     this.wavesurfer.backend.buffer != null
+        //         ? this.wavesurfer.backend.buffer.numberOfChannels
+        //         : 1;
+        // if (channelCount > 0 ) {
+        //     this.lyricHeightPx = this.wavesurfer.getHeight() * channelCount;
+        //     this.lyricHeight = this.lyricHeightPx +"px";  
+        // } 
+        // console.log(this.wavesurfer.getHeight(),channelCount,this.lyricHeightPx,this.lyricHeight)
 
         this.formatTimeCallback = params.formatTimeCallback;
         this.edgeScrollWidth = params.edgeScrollWidth;
@@ -206,6 +201,7 @@ export class Lyric {
             top: this.marginTop
         });
 
+        // css of lyric lines
         this.line1El = this.util.withOrientation(
             this.element.appendChild(document.createElement('span')),
             this.vertical
@@ -227,12 +223,13 @@ export class Lyric {
             top: "0px",
             left:"3px"
         });
+
         this.style(this.line2El, {
             position: 'absolute',
-            zIndex: 3,
-           // height: this.lyricHeight,
-            top: this.wavesurfer.getHeight()  - 23 + 'px',
-            left:"3px"
+            zIndex: 3,  
+            left:"3px",
+            bottom:"0"
+            // height: this.lyricHeight, 
         });
 
 
@@ -257,7 +254,7 @@ export class Lyric {
                 position: 'absolute',
                 top: '0px',
                 width: '2px',
-                height: '30%',
+                height: '100%',
                 backgroundColor: 'rgba(0, 0, 0, 1)'
             };
 
@@ -411,11 +408,23 @@ export class Lyric {
         const preventContextMenu = this.preventContextMenu;
 
         this.element.addEventListener('mouseenter', (e) => {
+            this.style(this.element, {
+                backgroundColor:"rgba(255,255,255,0.5)",
+                borderStyle:"solid",
+                borderColor:"gray",
+                borderWidth:"1px",
+            });
+
             this.fireEvent('mouseenter', e);
             this.wavesurfer.fireEvent('lyric-mouseenter', this, e);
         });
 
         this.element.addEventListener('mouseleave', (e) => {
+            this.style(this.element, {
+                backgroundColor:"rgba(255,255,255,0)",
+                borderStyle:"none", 
+                borderWidth:"0px",
+            });
             this.fireEvent('mouseleave', e);
             this.wavesurfer.fireEvent('lyric-mouseleave', this, e);
         });

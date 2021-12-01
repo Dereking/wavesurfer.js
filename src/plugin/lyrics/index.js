@@ -28,14 +28,14 @@
  * @property {boolean} resize=true Allow/disallow resizing the lyric.
  * @property {string} [color='rgba(0, 0, 0, 0.1)'] HTML color code.
  * @property {string} [line1='这是歌词1'] lyric first line 
- * @property {string} [line2='这是歌词2'] lyric seconde line
- * @property {?number} channelIdx Select channel to draw the lyric on (if there are multiple channel waveforms).
+ * @property {string} [line2='这是歌词2'] lyric seconde line 
  * @property {?object} handleStyle A set of CSS properties used to style the left and right handle.
  * @property {?boolean} preventContextMenu=false Determines whether the context menu is prevented from being opened.
  * @property {boolean} showTooltip=true Enable/disable tooltip displaying start and end times when hovering over lyric.
  */
 
-import {Lyric} from "./lyric.js";
+import {Lyric} from "./lyric.js"; 
+import LyricParser from 'lrc-file-parser';
 
 /**
  * Lyrics are visual overlays on waveform that can be used to play and loop
@@ -128,7 +128,34 @@ export default class LyricsPlugin {
         observerPrototypeKeys.forEach(key => {
             Lyric.prototype[key] = this.util.Observer.prototype[key];
         });
-        this.wavesurfer.Lyric = Lyric;
+
+
+        this.wavesurfer.Lyric = Lyric; 
+        let that = this
+        this.lyricParser = new LyricParser({
+            onPlay: function (line, text) { // 歌词播放时的回调
+              console.log(line, text) // line 是当前播放行
+                                      // text 是当前播放的歌词 
+            },
+            onSetLyric: function (lines) { // 监听歌词设置事件。当设置歌词时，歌词解析完毕会触发此回调。
+              //that.lrcLines = lines 
+              lines.forEach(line => { 
+                  console.log(line)
+                let start =  line.time / 1000.0
+                let end = start + 10
+                that.add({
+                    start: start,
+                    end: end,
+                    resize:true,
+                    line1:line.text,
+                    line2:"",
+                    loop: false,
+                    color: 'hsla(400, 100%, 30%, 0.5)'
+                }); 
+              });
+            },
+            offset: 0 // 歌词偏移时间单位毫秒, 默认 150 ms
+          }) 
 
         // By default, scroll the container if the user drags a lyric
         // within 5% (based on its initial size) of its edge
@@ -237,6 +264,52 @@ export default class LyricsPlugin {
         });
     }
 
+
+    /**
+     * Get a  sorted lyric list. sorted by start time
+     *
+     * 
+     * @return {Lyric} The created lyric
+     */
+     getSortedLyrics() { 
+        // return function(array,key){
+        //     return array.sort(function(a,b){
+        //         var x = a[key];
+        //         var y = b[key];
+        //         return ((x<y)?-1:(x>y)?1:0)
+        //     })
+        // }(this.list,'start');
+        let ret = []
+        Object.keys(this.list).forEach(id => {
+            let lyric = this.list[id] ;
+        }); 
+        let that = this
+        var newKeys = Object.keys(this.list).sort(function(a,b){ 
+        //console.log("a",a,b, that.wavesurfer.regions.list[a], that.wavesurfer.regions.list[b])
+            return that.list[a].start - that.list[b].start
+        })
+    
+        //console.log("newKeys",newKeys)
+     
+        for(var nk in newKeys){
+            //console.log("recalc ",newKeys[nk])
+            ret.push(this.list[ newKeys[nk] ])
+        }  
+
+        return ret
+    }
+
+    /**
+     * load a *.lrc file from text
+     *
+     * @param {lrcText} the lrc file content
+     * @param {lrcTextTranslation} the lrc file content  for translation.
+     * @return {success} return ture when success.
+     */
+     loadLrcUrl(lrcText,lrcTextTranslation) {
+        this.lyricParser.setLyric(lrcText,lrcTextTranslation)
+     }
+
     enableDragSelection(params) {
         this.disableDragSelection();
 
@@ -299,19 +372,19 @@ export default class LyricsPlugin {
                 this.wrapper.getBoundingClientRect(),
                 this.vertical
             );
-
+ 
             // set the lyric channel index based on the clicked area
             if (this.wavesurfer.params.splitChannels) {
                 const y = (e.touches ? e.touches[0].clientY : e.clientY) - wrapperRect.top;
-                const channelCount = this.wavesurfer.backend.buffer != null ? this.wavesurfer.backend.buffer.numberOfChannels : 1;
+                const channelCount = this.wavesurfer.backend.buffer != null ? this.wavesurfer.backend.buffer.numberOfChannels : 1;  
                 const channelHeight = this.wrapper.clientHeight / channelCount;
                 const channelIdx = Math.floor(y / channelHeight);
-                params.channelIdx = channelIdx;
+                //params.channelIdx = 0; 
                 const channelColors = this.wavesurfer.params.splitChannelsOptions.channelColors[channelIdx];
                 if (channelColors && channelColors.dragColor) {
                     params.color = channelColors.dragColor;
                 }
-            }
+            } 
 
             drag = true;
             start = this.wavesurfer.drawer.handleEvent(e, true);

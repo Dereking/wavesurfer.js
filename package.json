@@ -1,6 +1,6 @@
 {
   "name": "wavesurferplus.js",
-  "version": "5.2.1",
+  "version": "5.2.2",
   "description": "Interactive navigable audio visualization using Web Audio and Canvas. forked from wavesurfer.js",
   "main": "dist/wavesurfer.js",
   "directories": {
@@ -103,5 +103,8 @@
     "*.html": [
       "htmlhint"
     ]
+  },
+  "dependencies": {
+    "lrc-file-parser": "^1.2.4"
   }
 }

@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', function() {
         waveColor: '#A8DBA8',
         progressColor: '#3B8686',
         backend: 'MediaElement',
+        splitChannels: true,
         plugins: [
             WaveSurfer.regions.create({
                 regionsMinLength: 2,
@@ -42,8 +43,9 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // Load audio from URL
-    wavesurfer.load('../media/demo.wav');
 
+    wavesurfer.load('../media/stereo.mp3');
+    //wavesurfer.load('../media/demo.wav');
 
     document.querySelector(
         '[data-action="play-region-1"]'
